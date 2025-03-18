@@ -16,7 +16,6 @@ const getDayTemplate = (index: number, day?: number) => {
   );
 };
 
-// todo: Each child in a list should have a unique "key" prop
 function Calendar() {
   const columns = orderedWeekDays.map(formatWeekDay).map(getHeaderTemplate);
   const days = getCalendarDays(new Date(), orderedWeekDays).map((day, index) =>
