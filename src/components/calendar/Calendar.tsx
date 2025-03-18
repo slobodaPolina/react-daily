@@ -3,18 +3,25 @@ import { getCalendarDays } from '../../utils/time.ts';
 import './Calendar.scss';
 
 const getHeaderTemplate = (label: string) => (
-  <div className="header-wrapper">{label}</div>
+  <div className="header-wrapper" key={label}>
+    {label}
+  </div>
 );
-const getDayTemplate = (day?: number) => {
+const getDayTemplate = (index: number, day?: number) => {
   const dayFragment = day ? <span className="day-number">{day}</span> : null;
-  return <div className="day-wrapper">{dayFragment}</div>;
+  return (
+    <div className="day-wrapper" key={index}>
+      {dayFragment}
+    </div>
+  );
 };
 
 // todo: Each child in a list should have a unique "key" prop
-// todo tests
 function Calendar() {
   const columns = orderedWeekDays.map(formatWeekDay).map(getHeaderTemplate);
-  const days = getCalendarDays(new Date(), orderedWeekDays).map(getDayTemplate);
+  const days = getCalendarDays(new Date(), orderedWeekDays).map((day, index) =>
+    getDayTemplate(index, day),
+  );
 
   return (
     <div className="calendar-wrapper">
