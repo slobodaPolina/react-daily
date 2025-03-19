@@ -8,23 +8,18 @@ export enum WeekDay {
   SATURDAY,
 }
 
+const dayNameMap = {
+  [WeekDay.SUNDAY]: 'Sun',
+  [WeekDay.MONDAY]: 'Mon',
+  [WeekDay.TUESDAY]: 'Tue',
+  [WeekDay.WEDNESDAY]: 'Wed',
+  [WeekDay.THURSDAY]: 'Thu',
+  [WeekDay.FRIDAY]: 'Fri',
+  [WeekDay.SATURDAY]: 'Sat',
+};
+
 export const formatWeekDay = (day: WeekDay) => {
-  switch (day) {
-    case WeekDay.SUNDAY:
-      return 'Sun';
-    case WeekDay.MONDAY:
-      return 'Mon';
-    case WeekDay.TUESDAY:
-      return 'Tue';
-    case WeekDay.WEDNESDAY:
-      return 'Wed';
-    case WeekDay.THURSDAY:
-      return 'Thu';
-    case WeekDay.FRIDAY:
-      return 'Fri';
-    case WeekDay.SATURDAY:
-      return 'Sat';
-  }
+  return dayNameMap[day];
 };
 
 export const orderedWeekDays = [

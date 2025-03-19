@@ -17,8 +17,8 @@ const getMonthLength = (date = new Date()): number => {
 };
 
 export const getCalendarDays = (
-  date = new Date(),
   orderedWeekDays: WeekDay[],
+  date = new Date(),
 ) => {
   const monthLength = getMonthLength(date);
   const firstWeekDayOfMonth = getFirstWeekDayOfMonth(date);

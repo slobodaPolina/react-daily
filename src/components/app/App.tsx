@@ -1,12 +1,10 @@
 import './App.scss';
-import Calendar from '../calendar/Calendar.tsx';
+import { Calendar } from '../calendar/Calendar.tsx';
 
-function App() {
+export function App() {
   return (
     <div className="app-wrapper">
       <Calendar />
     </div>
   );
 }
-
-export default App;

@@ -1,33 +1,21 @@
+import { useMemo } from 'react';
 import { formatWeekDay, orderedWeekDays } from '../../types/week-days.ts';
 import { getCalendarDays } from '../../utils/time.ts';
-import './Calendar.scss';
+import { CalendarDay } from './calendar-day/CalendarDay.tsx';
+import classes from './Calendar.module.scss';
 
-const getHeaderTemplate = (label: string) => (
-  <div className="header-wrapper" key={label}>
-    {label}
-  </div>
-);
-const getDayTemplate = (index: number, day?: number) => {
-  const dayFragment = day ? <span className="day-number">{day}</span> : null;
-  return (
-    <div className="day-wrapper" key={index}>
-      {dayFragment}
-    </div>
-  );
-};
-
-function Calendar() {
-  const columns = orderedWeekDays.map(formatWeekDay).map(getHeaderTemplate);
-  const days = getCalendarDays(new Date(), orderedWeekDays).map((day, index) =>
-    getDayTemplate(index, day),
-  );
+export function Calendar() {
+  const weekDaysLabels = useMemo(() => orderedWeekDays.map(formatWeekDay), []);
+  const days = useMemo(() => getCalendarDays(orderedWeekDays), []);
 
   return (
-    <div className="calendar-wrapper">
-      {columns}
-      {days}
+    <div className={classes.calendarWrapper}>
+      {weekDaysLabels.map((label: string) => (
+        <div key={label}> {label} </div>
+      ))}
+      {days.map((day, index) => (
+        <CalendarDay day={day} key={index}></CalendarDay>
+      ))}
     </div>
   );
 }
-
-export default Calendar;
