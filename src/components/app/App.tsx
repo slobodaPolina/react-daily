@@ -1,15 +1,10 @@
 import './App.scss';
-import { Counter } from '../counter/Counter.tsx';
+import { Calendar } from '../calendar/Calendar.tsx';
 
-function App() {
+export function App() {
   return (
-    <div className="wrapper">
-      <h1>Vite + React</h1>
-      <div>
-        <Counter />
-      </div>
+    <div className="app-wrapper">
+      <Calendar />
     </div>
   );
 }
-
-export default App;
