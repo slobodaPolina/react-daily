@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "prettier -w src && eslint src --config eslint.config.ts",
-    "test": "vitest",
+    "test": "vitest run",
     "coverage": "vitest run --coverage",
     "preview": "vite preview",
     "prepare": "husky"
