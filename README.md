@@ -1,6 +1,6 @@
 # React-based Daily tasks application
 
-Uses React + TypeScript + Vite + Vitest + AWS
+Uses React, TypeScript, SCSS, Mantine, Vitest, Vite, AWS
 
 ## Description
 
