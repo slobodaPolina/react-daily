@@ -33,3 +33,24 @@ export const getCalendarDays = (
     return day <= 0 ? undefined : day;
   });
 };
+
+export const getStartOfDateInUTC = (date: Date): Date => {
+  const dateCopy = new Date(date);
+  dateCopy.setHours(0);
+  dateCopy.setMinutes(0);
+  dateCopy.setSeconds(0);
+  dateCopy.setMilliseconds(0);
+
+  return dateCopy;
+};
+
+export const getCurrentMonthDay = (day: number) => {
+  const dateCopy = getStartOfDateInUTC(new Date());
+  dateCopy.setDate(day);
+
+  return dateCopy;
+};
+
+export const equalDates = (a: Date, b: Date) =>
+  JSON.stringify(getStartOfDateInUTC(a)) ===
+  JSON.stringify(getStartOfDateInUTC(b));
