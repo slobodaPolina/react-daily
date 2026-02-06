@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { formatWeekDay, orderedWeekDays } from '../../types/week-days.ts';
 import { getCalendarDays } from '../../utils/time.ts';
-import { CalendarDay } from './calendar-day/CalendarDay.tsx';
+import { CalendarDay } from './CalendarDay.tsx';
 import classes from './Calendar.module.scss';
 
 export function Calendar() {

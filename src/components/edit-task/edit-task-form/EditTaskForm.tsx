@@ -3,7 +3,7 @@ import { DatePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import {
   Task,
-  taskInitialValues,
+  taskInitialValue,
   taskRepetitionOptions,
 } from '../../../types/task.ts';
 import classes from '../EditTask.module.scss';
@@ -16,7 +16,7 @@ interface EditTaskFormProps {
 export function EditTaskForm({ task, handleSubmit }: EditTaskFormProps) {
   const form = useForm<Task>({
     mode: 'uncontrolled',
-    initialValues: task ?? taskInitialValues,
+    initialValues: task ?? taskInitialValue,
 
     validate: {
       name: (value) => (value?.length ? null : 'Name is required'),

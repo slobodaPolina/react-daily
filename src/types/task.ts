@@ -23,7 +23,7 @@ export const taskRepetitionOptions = (
   value: key,
 }));
 
-export const taskInitialValues: Task = {
+export const taskInitialValue: Task = {
   name: '',
   date: new Date(),
   repetition: TaskRepetition.ONCE,
