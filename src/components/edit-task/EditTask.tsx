@@ -12,6 +12,11 @@ export function EditTask({ task }: EditTaskProps) {
   const icon = task ? 'edit' : 'add_task';
   const title = task ? 'Edit Task' : 'Add Task';
 
+  const handleSubmit = (task: Task) => {
+    alert(JSON.stringify(task)); // todo save the data
+    close();
+  };
+
   return (
     <>
       <ActionIcon variant="gradient" size="xl" onClick={open}>
@@ -19,7 +24,7 @@ export function EditTask({ task }: EditTaskProps) {
       </ActionIcon>
 
       <Drawer position={'right'} opened={opened} onClose={close} title={title}>
-        <EditTaskForm task={task} />
+        <EditTaskForm task={task} handleSubmit={handleSubmit} />
       </Drawer>
     </>
   );

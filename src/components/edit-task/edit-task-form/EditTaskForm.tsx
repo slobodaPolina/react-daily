@@ -10,12 +10,12 @@ import classes from '../EditTask.module.scss';
 
 interface EditTaskFormProps {
   task?: Task;
+  handleSubmit: (task: Task) => void;
 }
 
-export function EditTaskForm({ task }: EditTaskFormProps) {
+export function EditTaskForm({ task, handleSubmit }: EditTaskFormProps) {
   const form = useForm<Task>({
     mode: 'uncontrolled',
-    onSubmitPreventDefault: 'validation-failed', // todo this way it redirects!
     initialValues: task ?? taskInitialValues,
 
     validate: {
@@ -24,10 +24,6 @@ export function EditTaskForm({ task }: EditTaskFormProps) {
   });
 
   const datePickerProps = form.getInputProps('date');
-
-  const handleSubmit = (values: Task) => {
-    alert(values); // todo save the data
-  };
 
   return (
     <form
