@@ -1,10 +1,18 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 import '../styles/index.scss';
-import { App } from './app/App.tsx';
+import { App } from './App.tsx';
+import { store } from '../stores/app.store';
+import { Provider } from 'react-redux';
 
 createRoot(document.getElementsByTagName('body').item(0)!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
+  <>
+    <StrictMode>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </StrictMode>
+  </>,
 );

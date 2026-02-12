@@ -33,3 +33,31 @@ export const getCalendarDays = (
     return day <= 0 ? undefined : day;
   });
 };
+
+const getDate = (date?: string) => (date ? new Date(date) : new Date());
+
+export const getStartOfDateInUTC = (date?: string): Date => {
+  const dateCopy = getDate(date);
+  dateCopy.setHours(0);
+  dateCopy.setMinutes(0);
+  dateCopy.setSeconds(0);
+  dateCopy.setMilliseconds(0);
+
+  return dateCopy;
+};
+
+export const getCurrentMonthDay = (day: number) => {
+  const dateCopy = getStartOfDateInUTC();
+  dateCopy.setDate(day);
+
+  return dateCopy;
+};
+
+export const equalDates = (a: string, b: string) =>
+  getStartOfDateInUTC(a).toString() === getStartOfDateInUTC(b).toString();
+
+export const equalDaysOfWeek = (a: string, b: string) =>
+  getStartOfDateInUTC(a).getUTCDay() === getStartOfDateInUTC(b).getUTCDay();
+
+export const equalDaysOfMonth = (a: string, b: string) =>
+  getStartOfDateInUTC(a).getUTCDate() === getStartOfDateInUTC(b).getUTCDate();
