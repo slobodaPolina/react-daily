@@ -1,6 +1,6 @@
 import { Badge } from '@mantine/core';
 import { useSelector } from 'react-redux';
-import { selectTasksByDay } from '../../stores/task.store.ts';
+import { selectTasksByDate } from '../../stores/task.store.ts';
 import { getCurrentMonthDay } from '../../utils/time.ts';
 import { CalendarTask } from './CalendarTask.tsx';
 import classes from './Calendar.module.scss';
@@ -11,7 +11,7 @@ interface CalendarTasksProps {
 
 export function CalendarTasks({ day }: CalendarTasksProps) {
   const date = getCurrentMonthDay(day).toString();
-  const tasks = useSelector(selectTasksByDay(date));
+  const tasks = useSelector(selectTasksByDate(date));
 
   return (
     <div className={classes.contentWrapper}>

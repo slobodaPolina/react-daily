@@ -55,3 +55,9 @@ export const getCurrentMonthDay = (day: number) => {
 
 export const equalDates = (a: string, b: string) =>
   getStartOfDateInUTC(a).toString() === getStartOfDateInUTC(b).toString();
+
+export const equalDaysOfWeek = (a: string, b: string) =>
+  getStartOfDateInUTC(a).getUTCDay() === getStartOfDateInUTC(b).getUTCDay();
+
+export const equalDaysOfMonth = (a: string, b: string) =>
+  getStartOfDateInUTC(a).getUTCDate() === getStartOfDateInUTC(b).getUTCDate();

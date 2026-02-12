@@ -1,6 +1,5 @@
 import { combineReducers, createAction, createReducer } from '@reduxjs/toolkit';
-import { Task } from '../types/task.ts';
-import { equalDates } from '../utils/time.ts';
+import { matches, Task } from '../types/task.ts';
 import { AppState } from './app.store.ts';
 
 export const tasksInit = createAction<Task[]>('tasksInit');
@@ -17,5 +16,5 @@ export const taskReducer = combineReducers({
 
 export const selectTasks = (state: AppState) => state.tasks.taskValue;
 
-export const selectTasksByDay = (day: string) => (state: AppState) =>
-  selectTasks(state).filter(({ date }) => equalDates(date, day)); // todo or 'once in a month' - same day of another month?
+export const selectTasksByDate = (day: string) => (state: AppState) =>
+  selectTasks(state).filter((task) => matches(task, day));
