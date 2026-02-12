@@ -5,6 +5,7 @@ import {
 } from '../utils/time.ts';
 
 export interface Task {
+  uuid: string;
   name: string;
   date: string;
   repetition: TaskRepetition;
@@ -30,6 +31,7 @@ export const taskRepetitionOptions = (
 }));
 
 export const taskInitialValue: Task = {
+  uuid: '',
   name: '',
   date: new Date().toString(),
   repetition: TaskRepetition.ONCE,

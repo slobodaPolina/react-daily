@@ -17,8 +17,7 @@ export function CalendarTasks({ day }: CalendarTasksProps) {
     <div className={classes.contentWrapper}>
       <Badge color="deepBlue.5">{day}</Badge>
       {tasks.map((task) => (
-        // todo proper key
-        <CalendarTask key={task.name} task={task} />
+        <CalendarTask key={task.uuid} task={task} />
       ))}
     </div>
   );

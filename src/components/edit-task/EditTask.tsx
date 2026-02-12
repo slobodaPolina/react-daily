@@ -17,7 +17,7 @@ export function EditTask({ task }: EditTaskProps) {
   const title = task ? 'Edit Task' : 'Add Task';
 
   const handleSubmit = (task: Task) => {
-    dispatch(addTask(task));
+    dispatch(addTask(task)); // either add or edit by uuid!
     close();
   };
 

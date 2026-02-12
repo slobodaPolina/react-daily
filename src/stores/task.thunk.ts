@@ -18,6 +18,7 @@ export const addTask = (task: Task): AppThunk => {
     dispatch(
       taskAdded({
         ...task,
+        uuid: crypto.randomUUID(),
         date: getStartOfDateInUTC(task.date).toString(),
       }),
     );
