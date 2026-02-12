@@ -3,7 +3,8 @@ import { useDisclosure } from '@mantine/hooks';
 import { Task } from '../../types/task.ts';
 import { EditTaskForm } from './edit-task-form/EditTaskForm.tsx';
 import { useDispatch } from 'react-redux';
-import { addTask } from '../../stores/task.store.ts';
+import { addTask } from '../../stores/task.thunk.ts';
+import { AppDispatch } from '../../stores/app.store.ts';
 
 interface EditTaskProps {
   task?: Task;
@@ -11,7 +12,7 @@ interface EditTaskProps {
 
 export function EditTask({ task }: EditTaskProps) {
   const [opened, { open, close }] = useDisclosure(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const icon = task ? 'edit' : 'add_task';
   const title = task ? 'Edit Task' : 'Add Task';
 

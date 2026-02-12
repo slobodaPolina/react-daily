@@ -34,8 +34,10 @@ export const getCalendarDays = (
   });
 };
 
-export const getStartOfDateInUTC = (date: Date): Date => {
-  const dateCopy = new Date(date);
+const getDate = (date?: string) => (date ? new Date(date) : new Date());
+
+export const getStartOfDateInUTC = (date?: string): Date => {
+  const dateCopy = getDate(date);
   dateCopy.setHours(0);
   dateCopy.setMinutes(0);
   dateCopy.setSeconds(0);
@@ -45,12 +47,11 @@ export const getStartOfDateInUTC = (date: Date): Date => {
 };
 
 export const getCurrentMonthDay = (day: number) => {
-  const dateCopy = getStartOfDateInUTC(new Date());
+  const dateCopy = getStartOfDateInUTC();
   dateCopy.setDate(day);
 
   return dateCopy;
 };
 
-export const equalDates = (a: Date, b: Date) =>
-  JSON.stringify(getStartOfDateInUTC(a)) ===
-  JSON.stringify(getStartOfDateInUTC(b));
+export const equalDates = (a: string, b: string) =>
+  getStartOfDateInUTC(a).toString() === getStartOfDateInUTC(b).toString();

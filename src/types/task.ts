@@ -1,6 +1,6 @@
 export interface Task {
   name: string;
-  date: Date;
+  date: string;
   repetition: TaskRepetition;
 }
 
@@ -25,6 +25,6 @@ export const taskRepetitionOptions = (
 
 export const taskInitialValue: Task = {
   name: '',
-  date: new Date(),
+  date: new Date().toString(),
   repetition: TaskRepetition.ONCE,
 };

@@ -10,7 +10,7 @@ interface CalendarTasksProps {
 }
 
 export function CalendarTasks({ day }: CalendarTasksProps) {
-  const date = getCurrentMonthDay(day);
+  const date = getCurrentMonthDay(day).toString();
   const tasks = useSelector(selectTasksByDay(date));
 
   return (
