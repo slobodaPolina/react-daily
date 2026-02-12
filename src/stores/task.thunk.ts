@@ -5,11 +5,25 @@ import { getStartOfDateInUTC } from '../utils/time.ts';
 
 const tasksLocalStorageKey = 'tasks';
 
+const setLocalStorage = (tasks: Task[]) =>
+  localStorage.setItem(tasksLocalStorageKey, JSON.stringify(tasks));
+
 export const initTasks = (): AppThunk => {
   return (dispatch) => {
-    dispatch(
-      tasksInit(JSON.parse(localStorage.getItem(tasksLocalStorageKey) ?? '[]')),
-    );
+    const storedTasks = localStorage.getItem(tasksLocalStorageKey);
+    let parsedTasks = [];
+
+    if (storedTasks) {
+      try {
+        parsedTasks = JSON.parse(storedTasks);
+      } catch (e) {
+        console.error(e);
+        parsedTasks = [];
+      }
+    }
+
+    dispatch(tasksInit(parsedTasks));
+    setLocalStorage(parsedTasks); // reset local storage in case of errors
   };
 };
 
@@ -23,9 +37,6 @@ export const addTask = (task: Task): AppThunk => {
       }),
     );
 
-    localStorage.setItem(
-      tasksLocalStorageKey,
-      JSON.stringify(selectTasks(getState())),
-    );
+    setLocalStorage(selectTasks(getState()));
   };
 };

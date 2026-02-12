@@ -48,7 +48,7 @@ export function EditTaskForm({ task, handleSubmit }: EditTaskFormProps) {
         {...form.getInputProps('repetition')}
       />
 
-      <Button type="submit" variant="gradient">
+      <Button type="submit" variant="gradient" disabled={!form.isValid()}>
         Submit
       </Button>
     </form>
