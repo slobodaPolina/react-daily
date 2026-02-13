@@ -16,5 +16,5 @@ export const taskReducer = combineReducers({
 
 export const selectTasks = (state: AppState) => state.tasks.taskValue;
 
-export const selectTasksByDate = (day: string) => (state: AppState) =>
-  selectTasks(state).filter((task) => matches(task, day));
+export const selectTasksByDate = (date: string) => (state: AppState) =>
+  selectTasks(state).filter((task) => matches(task, date));

@@ -5,17 +5,16 @@ import {
   UnknownAction,
 } from '@reduxjs/toolkit';
 import { taskReducer } from './task.store.ts';
+import { dayReducer } from './day.store.ts';
 
 const rootReducer = combineReducers({
+  day: dayReducer,
   tasks: taskReducer,
 });
 
-export const store = configureStore({
-  reducer: rootReducer,
-});
+export const store = configureStore({ reducer: rootReducer });
 
 type AppStore = typeof store;
-
 export type AppDispatch = AppStore['dispatch'];
 export type AppState = ReturnType<AppStore['getState']>;
 

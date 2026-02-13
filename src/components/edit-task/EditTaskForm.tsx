@@ -5,8 +5,8 @@ import {
   Task,
   taskInitialValue,
   taskRepetitionOptions,
-} from '../../../types/task.ts';
-import classes from '../EditTask.module.scss';
+} from '../../types/task.ts';
+import classes from './EditTask.module.scss';
 
 interface EditTaskFormProps {
   task?: Task;

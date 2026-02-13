@@ -1,7 +1,7 @@
 import { ActionIcon, Drawer } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Task } from '../../types/task.ts';
-import { EditTaskForm } from './edit-task-form/EditTaskForm.tsx';
+import { EditTaskForm } from './EditTaskForm.tsx';
 import { useDispatch } from 'react-redux';
 import { addTask } from '../../stores/task.thunk.ts';
 import { AppDispatch } from '../../stores/app.store.ts';
@@ -27,7 +27,12 @@ export function EditTask({ task }: EditTaskProps) {
         <span className="material-icons">{icon}</span>
       </ActionIcon>
 
-      <Drawer position={'right'} opened={opened} onClose={close} title={title}>
+      <Drawer
+        position={'right'}
+        opened={opened}
+        onClose={close}
+        title={title}
+        size="25%">
         <EditTaskForm task={task} handleSubmit={handleSubmit} />
       </Drawer>
     </>
