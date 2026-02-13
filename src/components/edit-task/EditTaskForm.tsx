@@ -13,7 +13,7 @@ interface EditTaskFormProps {
 export function EditTaskForm({ task, handleSubmit }: EditTaskFormProps) {
   const form = useForm<Task>({
     mode: 'uncontrolled',
-    initialValues: task ?? taskInitialValue,
+    initialValues: task ? { ...task } : taskInitialValue,
 
     validate: {
       name: (value) => (value?.length ? null : 'Name is required'),

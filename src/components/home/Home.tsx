@@ -1,7 +1,7 @@
 import { Calendar } from '../calendar/Calendar.tsx';
 import { DayInfo } from '../day/DayInfo.tsx';
-import { EditTask } from '../edit-task/EditTask.tsx';
 import classes from './Home.module.scss';
+import { AddTaskBtn } from '../edit-task/AddTaskBtn.tsx';
 
 export function Home() {
   return (
@@ -10,7 +10,7 @@ export function Home() {
         <Calendar />
 
         <div className={classes.actionButtons}>
-          <EditTask />
+          <AddTaskBtn size="xl" />
         </div>
       </div>
       <div className={classes.secondaryArea}>

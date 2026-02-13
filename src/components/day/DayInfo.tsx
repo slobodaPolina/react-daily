@@ -1,14 +1,20 @@
 import classes from './DayInfo.module.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectDay } from '../../stores/day.store.ts';
 import { ActionIcon, Badge, Card, Group, Paper, Text } from '@mantine/core';
 import { formatDate } from '../../utils/time.ts';
 import { selectTasksByDate } from '../../stores/task.store.ts';
 import { taskRepetitionLabels } from '../../types/TaskRepetition.ts';
+import { AppDispatch } from '../../stores/app.store.ts';
+import { deleteTask } from '../../stores/task.thunk.ts';
+import { EditTaskBtn } from '../edit-task/EditTaskBtn.tsx';
 
 export function DayInfo() {
+  const dispatch = useDispatch<AppDispatch>();
   const selectedDay = useSelector(selectDay);
   const tasks = useSelector(selectTasksByDate(selectedDay));
+  // todo confirmation?
+  const onDeleteTask = (uuid: string) => dispatch(deleteTask(uuid));
 
   return (
     <Paper className={classes.dayContainer} shadow="md" radius="md" p="xl">
@@ -24,15 +30,14 @@ export function DayInfo() {
           </Group>
 
           <Group justify="end" mt="md">
-            <ActionIcon variant="gradient" aria-label="Edit" size="lg">
-              <span className="material-icons">edit</span>
-            </ActionIcon>
+            <EditTaskBtn task={task}></EditTaskBtn>
 
             <ActionIcon
               variant="gradient"
               gradient={{ from: 'red', to: 'dark', deg: 45 }}
               aria-label="Delete"
-              size="lg">
+              size="lg"
+              onClick={() => onDeleteTask(task.uuid)}>
               <span className="material-icons">delete</span>
             </ActionIcon>
           </Group>
