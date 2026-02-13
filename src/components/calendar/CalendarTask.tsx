@@ -1,24 +1,15 @@
 import { Badge, Tooltip } from '@mantine/core';
-import { Task, TaskRepetition } from '../../types/task.ts';
+import { Task } from '../../types/task.ts';
 import classes from './Calendar.module.scss';
+import { getRepetitionIcon } from '../../types/TaskRepetition.ts';
 
 interface CalendarTaskProps {
   task: Task;
 }
 
-const getIcon = (repetition: TaskRepetition): string => {
-  switch (repetition) {
-    case TaskRepetition.ONCE:
-      return '1x_mobiledata';
-    case TaskRepetition.EVERY_MONTH:
-    case TaskRepetition.EVERY_WEEK:
-      return 'loop';
-  }
-};
-
 export function CalendarTask({ task }: CalendarTaskProps) {
   const icon = (
-    <span className="material-icons">{getIcon(task.repetition)}</span>
+    <span className="material-icons">{getRepetitionIcon(task.repetition)}</span>
   );
 
   return (

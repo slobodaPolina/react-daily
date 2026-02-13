@@ -1,12 +1,9 @@
 import { Button, SegmentedControl, TextInput } from '@mantine/core';
 import { DatePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
-import {
-  Task,
-  taskInitialValue,
-  taskRepetitionOptions,
-} from '../../types/task.ts';
+import { Task, taskInitialValue } from '../../types/task.ts';
 import classes from './EditTask.module.scss';
+import { taskRepetitionOptions } from '../../types/TaskRepetition.ts';
 
 interface EditTaskFormProps {
   task?: Task;

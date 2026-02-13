@@ -23,7 +23,7 @@ export function EditTask({ task }: EditTaskProps) {
 
   return (
     <>
-      <ActionIcon variant="gradient" size="xl" onClick={open}>
+      <ActionIcon variant="gradient" aria-label="Add" size="xl" onClick={open}>
         <span className="material-icons">{icon}</span>
       </ActionIcon>
 
