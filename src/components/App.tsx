@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { initTasks } from '../stores/task.thunk.ts';
 import { useEffect } from 'react';
 import { AppDispatch } from '../stores/app.store.ts';
+import { ConfirmationModalContextProvider } from '../providers/ConfirmationModalContextProvider.tsx';
 
 export function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -13,9 +14,11 @@ export function App() {
 
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
-      <div className={classes.appWrapper}>
-        <Home />
-      </div>
+      <ConfirmationModalContextProvider>
+        <div className={classes.appWrapper}>
+          <Home />
+        </div>
+      </ConfirmationModalContextProvider>
     </MantineProvider>
   );
 }

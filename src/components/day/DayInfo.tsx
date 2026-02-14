@@ -4,17 +4,26 @@ import { selectDay } from '../../stores/day.store.ts';
 import { ActionIcon, Badge, Card, Group, Paper, Text } from '@mantine/core';
 import { formatDate } from '../../utils/time.ts';
 import { selectTasksByDate } from '../../stores/task.store.ts';
-import { taskRepetitionLabels } from '../../types/TaskRepetition.ts';
+import { taskRepetitionLabels } from '../../types/task-repetition.ts';
 import { AppDispatch } from '../../stores/app.store.ts';
 import { deleteTask } from '../../stores/task.thunk.ts';
 import { EditTaskBtn } from '../edit-task/EditTaskBtn.tsx';
+import { useConfirmationModal } from '../../hooks/useConfirmationModal.ts';
+import { Task } from '../../types/task.ts';
 
 export function DayInfo() {
   const dispatch = useDispatch<AppDispatch>();
   const selectedDay = useSelector(selectDay);
   const tasks = useSelector(selectTasksByDate(selectedDay));
-  // todo confirmation?
-  const onDeleteTask = (uuid: string) => dispatch(deleteTask(uuid));
+  const confirmationModal = useConfirmationModal();
+
+  const onDeleteTask = (task: Task) =>
+    confirmationModal
+      .showConfirmation({
+        title: 'Delete task',
+        message: `Are you sure you want to delete the "${task.name}" task?`,
+      })
+      .then(() => dispatch(deleteTask(task.uuid)));
 
   return (
     <Paper className={classes.dayContainer} shadow="md" radius="md" p="xl">
@@ -37,7 +46,7 @@ export function DayInfo() {
               gradient={{ from: 'red', to: 'dark', deg: 45 }}
               aria-label="Delete"
               size="lg"
-              onClick={() => onDeleteTask(task.uuid)}>
+              onClick={() => onDeleteTask(task)}>
               <span className="material-icons">delete</span>
             </ActionIcon>
           </Group>

@@ -1,7 +1,7 @@
 import { Badge, Tooltip } from '@mantine/core';
 import { Task } from '../../types/task.ts';
 import classes from './Calendar.module.scss';
-import { getRepetitionIcon } from '../../types/TaskRepetition.ts';
+import { getRepetitionIcon } from '../../types/task-repetition.ts';
 
 interface CalendarTaskProps {
   task: Task;

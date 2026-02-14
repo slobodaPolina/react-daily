@@ -3,7 +3,7 @@ import {
   equalDaysOfMonth,
   equalDaysOfWeek,
 } from '../utils/time.ts';
-import { TaskRepetition } from './TaskRepetition.ts';
+import { TaskRepetition } from './task-repetition.ts';
 
 export interface Task {
   uuid: string;

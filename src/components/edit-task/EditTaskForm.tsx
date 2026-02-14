@@ -3,7 +3,7 @@ import { DatePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { Task, taskInitialValue } from '../../types/task.ts';
 import classes from './EditTask.module.scss';
-import { taskRepetitionOptions } from '../../types/TaskRepetition.ts';
+import { taskRepetitionOptions } from '../../types/task-repetition.ts';
 
 interface EditTaskFormProps {
   task?: Task;
