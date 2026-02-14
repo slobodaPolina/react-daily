@@ -1,6 +1,5 @@
 .calendar-wrapper {
   width: 95%;
-  padding-top: 3em;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -19,6 +18,11 @@
   flex-direction: column;
   gap: 0.5em;
   margin: 0.5em;
+
+  &,
+  & > * {
+    cursor: pointer;
+  }
 }
 
 .task-card {

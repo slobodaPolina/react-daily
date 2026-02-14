@@ -16,6 +16,19 @@ export const theme = createTheme({
       '#39588f',
       '#2d4b81',
     ],
+
+    red: [
+      '#e01e37',
+      '#da1e37',
+      '#c71f37',
+      '#bd1f36',
+      '#b21e35',
+      '#a71e34',
+      '#a11d33',
+      '#85182a',
+      '#6e1423',
+      '#641220',
+    ],
   },
 
   defaultGradient: {

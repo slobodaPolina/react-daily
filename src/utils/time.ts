@@ -61,3 +61,5 @@ export const equalDaysOfWeek = (a: string, b: string) =>
 
 export const equalDaysOfMonth = (a: string, b: string) =>
   getStartOfDateInUTC(a).getUTCDate() === getStartOfDateInUTC(b).getUTCDate();
+
+export const formatDate = (date: string) => new Date(date).toDateString();
