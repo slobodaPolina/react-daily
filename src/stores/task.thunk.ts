@@ -1,30 +1,26 @@
 import { Task } from '../types/task.ts';
-import {
-  selectTasks,
-  taskAdded,
-  taskDeleted,
-  taskEdited,
-  tasksInit,
-} from './task.store.ts';
+import { taskAdded, taskDeleted, taskEdited, tasksInit } from './task.store.ts';
 import { AppThunk } from './app.store.ts';
 import { getStartOfDateInUTC } from '../utils/time.ts';
+import { TaskState } from './task.store.ts';
+import { selectTasks } from './selectors.ts';
+import { addScheduleAndInteraction } from './schedule.thunk.ts';
 
 const tasksLocalStorageKey = 'tasks';
 
-const setLocalStorage = (tasks: Task[]) =>
+const setLocalStorage = (tasks: TaskState) =>
   localStorage.setItem(tasksLocalStorageKey, JSON.stringify(tasks));
 
 export const initTasks = (): AppThunk => {
   return (dispatch) => {
     const storedTasks = localStorage.getItem(tasksLocalStorageKey);
-    let parsedTasks = [];
+    let parsedTasks = {};
 
     if (storedTasks) {
       try {
         parsedTasks = JSON.parse(storedTasks);
       } catch (e) {
         console.error(e);
-        parsedTasks = [];
       }
     }
 
@@ -35,18 +31,19 @@ export const initTasks = (): AppThunk => {
 
 export const addTask = (task: Task): AppThunk => {
   return async (dispatch, getState) => {
-    dispatch(
-      taskAdded({
-        ...task,
-        uuid: crypto.randomUUID(),
-        date: getStartOfDateInUTC(task.date).toString(),
-      }),
-    );
+    const payload = {
+      ...task,
+      uuid: crypto.randomUUID(),
+      date: getStartOfDateInUTC(task.date).toString(),
+    };
 
+    dispatch(taskAdded(payload));
+    dispatch(addScheduleAndInteraction(payload));
     setLocalStorage(selectTasks(getState()));
   };
 };
 
+// todo sync with the iterations and schedule:
 export const editTask = (task: Task): AppThunk => {
   return async (dispatch, getState) => {
     dispatch(
