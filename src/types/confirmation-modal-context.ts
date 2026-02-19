@@ -5,10 +5,10 @@ export type ConfirmationModalParams = {
   message: string;
 };
 
-export type ModalContextType = {
-  showConfirmation: (params: ConfirmationModalParams) => Promise<void>;
-};
+export type ModalContextType = (
+  params: ConfirmationModalParams,
+) => Promise<void>;
 
-export const ConfirmationModalContext = createContext<ModalContextType>(
-  {} as ModalContextType,
+export const confirmationModalContext = createContext<ModalContextType>(
+  null as unknown as ModalContextType,
 );
