@@ -48,7 +48,6 @@ export const addTask = (task: Task): AppThunk => {
   };
 };
 
-// todo sync with the iterations and schedule:
 export const editTask = (task: Task): AppThunk => {
   return async (dispatch, getState) => {
     dispatch(
@@ -58,6 +57,8 @@ export const editTask = (task: Task): AppThunk => {
       }),
     );
 
+    dispatch(deleteScheduleAndInteraction(task.uuid));
+    dispatch(addScheduleAndInteraction(task));
     setLocalStorage(selectTasks(getState()));
   };
 };
