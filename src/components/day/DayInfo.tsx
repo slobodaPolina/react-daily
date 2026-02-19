@@ -10,18 +10,19 @@ import { taskRepetitionLabels } from '../../types/task-repetition.ts';
 import { AppDispatch } from '../../stores/app.store.ts';
 import { deleteTask } from '../../stores/task.thunk.ts';
 import { EditTaskBtn } from '../edit-task/EditTaskBtn.tsx';
-import { useConfirmationModal } from '../../hooks/useConfirmationModal.ts';
 import { Task } from '../../types/task.ts';
 import {
   selectDay,
   selectTasksIterationsByDay,
 } from '../../stores/selectors.ts';
+import { useContext } from 'react';
+import { confirmationModalContext } from '../../types/confirmation-modal-context.ts';
 
 export function DayInfo() {
   const dispatch = useDispatch<AppDispatch>();
   const selectedDay = useSelector(selectDay);
   const tasksIterations = useSelector(selectTasksIterationsByDay(selectedDay));
-  const confirmationModal = useConfirmationModal();
+  const confirmationModal = useContext(confirmationModalContext);
 
   const formattedDate = formatDate(
     getCurrentMonthDate(selectedDay) ??
@@ -29,12 +30,10 @@ export function DayInfo() {
   );
 
   const onDeleteTask = (task: Task) =>
-    confirmationModal
-      .showConfirmation({
-        title: 'Delete task',
-        message: `Are you sure you want to delete the "${task.name}" task?`,
-      })
-      .then(() => dispatch(deleteTask(task.uuid)));
+    confirmationModal({
+      title: 'Delete task',
+      message: `Are you sure you want to delete the "${task.name}" task?`,
+    }).then(() => dispatch(deleteTask(task.uuid)));
 
   return (
     <Paper className={classes.dayContainer} shadow="md" radius="md" p="xl">

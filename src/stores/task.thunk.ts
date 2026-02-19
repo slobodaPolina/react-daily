@@ -50,15 +50,14 @@ export const addTask = (task: Task): AppThunk => {
 
 export const editTask = (task: Task): AppThunk => {
   return async (dispatch, getState) => {
-    dispatch(
-      taskEdited({
-        ...task,
-        date: getStartOfDateInUTC(task.date).toString(),
-      }),
-    );
+    const payload = {
+      ...task,
+      date: getStartOfDateInUTC(task.date).toString(),
+    };
 
-    dispatch(deleteScheduleAndInteraction(task.uuid));
-    dispatch(addScheduleAndInteraction(task));
+    dispatch(taskEdited(payload));
+    dispatch(deleteScheduleAndInteraction(payload.uuid));
+    dispatch(addScheduleAndInteraction(payload));
     setLocalStorage(selectTasks(getState()));
   };
 };
