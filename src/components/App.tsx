@@ -7,15 +7,10 @@ import { initTasks } from '../stores/task.thunk.ts';
 import { useEffect } from 'react';
 import { AppDispatch } from '../stores/app.store.ts';
 import { ConfirmationModalContextProvider } from '../providers/ConfirmationModalContextProvider.tsx';
-import { initScheduleAndInteractions } from '../stores/schedule.thunk.ts';
 
 export function App() {
   const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    dispatch(initTasks());
-    dispatch(initScheduleAndInteractions());
-  }, [dispatch]);
+  useEffect(() => dispatch(initTasks()), [dispatch]);
 
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">

@@ -4,7 +4,10 @@ import { AppThunk } from './app.store.ts';
 import { getStartOfDateInUTC } from '../utils/time.ts';
 import { TaskState } from './task.store.ts';
 import { selectTasks } from './selectors.ts';
-import { addScheduleAndInteraction } from './schedule.thunk.ts';
+import {
+  addScheduleAndInteraction,
+  initScheduleAndInteractions,
+} from './schedule.thunk.ts';
 
 const tasksLocalStorageKey = 'tasks';
 
@@ -25,6 +28,7 @@ export const initTasks = (): AppThunk => {
     }
 
     dispatch(tasksInit(parsedTasks));
+    dispatch(initScheduleAndInteractions());
     setLocalStorage(parsedTasks); // reset local storage in case of errors
   };
 };

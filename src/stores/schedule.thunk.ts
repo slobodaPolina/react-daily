@@ -1,11 +1,15 @@
 import { AppDispatch, AppState, AppThunk } from './app.store.ts';
 import {
+  equalDates,
+  equalDaysOfMonth,
+  equalDaysOfWeek,
   getCurrentMonthDate,
   getCurrentMonthSameWeekdays,
   getDate,
   getDay,
   getMonthLength,
   isCurrentMonth,
+  startingFrom,
 } from '../utils/time.ts';
 import { scheduleAdd, scheduleInit, ScheduleState } from './schedule.store.ts';
 import { selectTasks } from './selectors.ts';
@@ -15,7 +19,7 @@ import {
   iterationsInit,
   IterationState,
 } from './iteration.store.ts';
-import { matches, Task } from '../types/task.ts';
+import { Task } from '../types/task.ts';
 import { TaskRepetition } from '../types/task-repetition.ts';
 
 // Schedule + Iterations
@@ -56,16 +60,18 @@ export const addScheduleAndInteraction = (task: Task): AppThunk => {
         break;
 
       case TaskRepetition.EVERY_WEEK:
-        getCurrentMonthSameWeekdays(task.date).forEach((date) =>
-          dispatchConstructedIteration(task, date.toString(), dispatch),
-        );
+        getCurrentMonthSameWeekdays(task.date)
+          .filter((date) => startingFrom(task.date, date.toString()))
+          .forEach((date) =>
+            dispatchConstructedIteration(task, date.toString(), dispatch),
+          );
         break;
 
       case TaskRepetition.EVERY_MONTH: {
-        const day = getCurrentMonthDate(getDay(task.date));
+        const date = getCurrentMonthDate(getDay(task.date))?.toString();
 
-        if (day) {
-          dispatchConstructedIteration(task, day.toString(), dispatch);
+        if (date && startingFrom(task.date, date)) {
+          dispatchConstructedIteration(task, date, dispatch);
         }
         break;
       }
@@ -82,6 +88,17 @@ const constructTaskIteration = (
   completionDate,
   task,
 });
+
+const matches = (task: Task, date: string) => {
+  switch (task.repetition) {
+    case TaskRepetition.ONCE:
+      return equalDates(task.date, date);
+    case TaskRepetition.EVERY_MONTH:
+      return equalDaysOfMonth(task.date, date) && startingFrom(task.date, date);
+    case TaskRepetition.EVERY_WEEK:
+      return equalDaysOfWeek(task.date, date) && startingFrom(task.date, date);
+  }
+};
 
 const selectTasksByDate = (date: string, state: AppState): Task[] | undefined =>
   Object.values(selectTasks(state)).filter((task: Task) => matches(task, date));

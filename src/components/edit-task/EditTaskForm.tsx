@@ -4,6 +4,7 @@ import { useForm } from '@mantine/form';
 import { Task, taskInitialValue } from '../../types/task.ts';
 import classes from './EditTask.module.scss';
 import { taskRepetitionOptions } from '../../types/task-repetition.ts';
+import { getStartOfDateInUTC } from '../../utils/time.ts';
 
 interface EditTaskFormProps {
   task?: Task;
@@ -36,6 +37,7 @@ export function EditTaskForm({ task, handleSubmit }: EditTaskFormProps) {
       <DatePicker
         defaultDate={datePickerProps.defaultValue}
         key={form.key('date')}
+        minDate={getStartOfDateInUTC()}
         {...datePickerProps}
       />
 

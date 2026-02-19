@@ -75,9 +75,12 @@ export const equalDaysOfWeek = (a: string, b: string) =>
 export const equalDaysOfMonth = (a: string, b: string) =>
   getStartOfDateInUTC(a).getDate() === getStartOfDateInUTC(b).getDate();
 
-export const getCurrentMonthSameWeekdays = (exampleDate: string): Date[] => {
+export const startingFrom = (from: string, testDate: string) =>
+  getStartOfDateInUTC(from) <= getStartOfDateInUTC(testDate);
+
+export const getCurrentMonthSameWeekdays = (startDate: string): Date[] => {
   const weekLength = 7;
-  const weekday = getDate(exampleDate).getDay();
+  const weekday = getDate(startDate).getDay();
   const firstDay =
     ((weekLength + weekday - getFirstWeekDayOfMonth()) % weekLength) + 1;
 
