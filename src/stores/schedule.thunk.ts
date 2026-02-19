@@ -11,11 +11,17 @@ import {
   isCurrentMonth,
   startingFrom,
 } from '../utils/time.ts';
-import { scheduleAdd, scheduleInit, ScheduleState } from './schedule.store.ts';
-import { selectTasks } from './selectors.ts';
+import {
+  scheduleAdd,
+  scheduleDelete,
+  scheduleInit,
+  ScheduleState,
+} from './schedule.store.ts';
+import { selectIterations, selectTasks } from './selectors.ts';
 import { TaskIteration } from '../types/task-iteration.ts';
 import {
   iterationAdd,
+  iterationsDelete,
   iterationsInit,
   IterationState,
 } from './iteration.store.ts';
@@ -76,6 +82,17 @@ export const addScheduleAndInteraction = (task: Task): AppThunk => {
         break;
       }
     }
+  };
+};
+
+export const deleteScheduleAndInteraction = (taskUuid: string): AppThunk => {
+  return (dispatch, getState) => {
+    const iterationUuids = Object.values(selectIterations(getState()))
+      .filter((iteration) => iteration.task.uuid === taskUuid)
+      .map(({ uuid }) => uuid);
+
+    dispatch(iterationsDelete(iterationUuids));
+    dispatch(scheduleDelete(iterationUuids));
   };
 };
 

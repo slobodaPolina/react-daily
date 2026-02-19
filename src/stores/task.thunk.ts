@@ -6,6 +6,7 @@ import { TaskState } from './task.store.ts';
 import { selectTasks } from './selectors.ts';
 import {
   addScheduleAndInteraction,
+  deleteScheduleAndInteraction,
   initScheduleAndInteractions,
 } from './schedule.thunk.ts';
 
@@ -64,7 +65,7 @@ export const editTask = (task: Task): AppThunk => {
 export const deleteTask = (uuid: string): AppThunk => {
   return async (dispatch, getState) => {
     dispatch(taskDeleted(uuid));
-
+    dispatch(deleteScheduleAndInteraction(uuid));
     setLocalStorage(selectTasks(getState()));
   };
 };
