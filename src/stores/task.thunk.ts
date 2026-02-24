@@ -1,14 +1,25 @@
 import { Task } from '../types/task.ts';
-import { taskAdded, taskDeleted, taskEdited, tasksInit } from './task.store.ts';
+import {
+  taskAdded,
+  taskDeleted,
+  taskEdited,
+  tasksInit,
+  TaskState,
+} from './task.store.ts';
 import { AppThunk } from './app.store.ts';
-import { getStartOfDateInUTC } from '../utils/time.ts';
-import { TaskState } from './task.store.ts';
+import {
+  getDate,
+  getDay,
+  getStartOfDateInUTC,
+  isCurrentMonth,
+} from '../utils/time.ts';
 import { selectTasks } from './selectors.ts';
 import {
   addScheduleAndInteraction,
   deleteScheduleAndInteraction,
   initScheduleAndInteractions,
 } from './schedule.thunk.ts';
+import { daySelected } from './day.store.ts';
 
 const tasksLocalStorageKey = 'tasks';
 
@@ -44,6 +55,11 @@ export const addTask = (task: Task): AppThunk => {
 
     dispatch(taskAdded(payload));
     dispatch(addScheduleAndInteraction(payload));
+
+    if (isCurrentMonth(getDate(payload.date))) {
+      dispatch(daySelected(getDay(payload.date)));
+    }
+
     setLocalStorage(selectTasks(getState()));
   };
 };

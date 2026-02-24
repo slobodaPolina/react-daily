@@ -1,4 +1,4 @@
-import { createTheme, rem } from '@mantine/core';
+import { createTheme, rem, Switch } from '@mantine/core';
 
 export const theme = createTheme({
   black: '#282a36',
@@ -29,6 +29,19 @@ export const theme = createTheme({
       '#6e1423',
       '#641220',
     ],
+
+    green: [
+      '#e0f8e0',
+      '#b2eaba',
+      '#88d79e',
+      '#60c381',
+      '#38af63',
+      '#20954a',
+      '#167535',
+      '#0d5522',
+      '#073610',
+      '#05290B',
+    ],
   },
 
   defaultGradient: {
@@ -50,5 +63,15 @@ export const theme = createTheme({
   shadows: {
     md: '1px 1px 3px rgba(0, 0, 0, .25)',
     xl: '5px 5px 3px rgba(0, 0, 0, .25)',
+  },
+
+  components: {
+    Switch: Switch.extend({
+      styles: {
+        root: {
+          '--mantine-cursor-type': 'pointer',
+        },
+      },
+    }),
   },
 });

@@ -17,7 +17,7 @@ import {
   scheduleInit,
   ScheduleState,
 } from './schedule.store.ts';
-import { selectIterations, selectTasks } from './selectors.ts';
+import { selectIteration, selectIterations, selectTasks } from './selectors.ts';
 import { TaskIteration } from '../types/task-iteration.ts';
 import {
   iterationAdd,
@@ -81,6 +81,21 @@ export const addScheduleAndInteraction = (task: Task): AppThunk => {
         }
         break;
       }
+    }
+  };
+};
+
+export const checkInteraction = (interactionUuid: string): AppThunk => {
+  return (dispatch, getState) => {
+    const iteration = selectIteration(interactionUuid)(getState());
+
+    if (iteration) {
+      dispatch(
+        iterationAdd({
+          ...iteration,
+          checked: !iteration.checked,
+        }),
+      );
     }
   };
 };
