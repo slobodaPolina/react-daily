@@ -6,9 +6,13 @@ import {
 } from '@reduxjs/toolkit';
 import { taskReducer } from './task.store.ts';
 import { dayReducer } from './day.store.ts';
+import { scheduleReducer } from './schedule.store.ts';
+import { iterationReducer } from './iteration.store.ts';
 
 const rootReducer = combineReducers({
   day: dayReducer,
+  iterations: iterationReducer,
+  schedule: scheduleReducer,
   tasks: taskReducer,
 });
 
@@ -21,6 +25,6 @@ export type AppState = ReturnType<AppStore['getState']>;
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   AppState,
-  unknown,
+  undefined,
   UnknownAction
 >;

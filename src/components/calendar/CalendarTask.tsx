@@ -1,13 +1,15 @@
 import { Badge, Tooltip } from '@mantine/core';
-import { Task } from '../../types/task.ts';
 import classes from './Calendar.module.scss';
 import { getRepetitionIcon } from '../../types/task-repetition.ts';
+import { TaskIteration } from '../../types/task-iteration.ts';
 
 interface CalendarTaskProps {
-  task: Task;
+  iteration: TaskIteration;
 }
 
-export function CalendarTask({ task }: CalendarTaskProps) {
+export function CalendarTask({ iteration }: CalendarTaskProps) {
+  const task = iteration.task;
+
   const icon = (
     <span className="material-icons">{getRepetitionIcon(task.repetition)}</span>
   );

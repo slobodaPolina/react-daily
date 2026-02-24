@@ -1,30 +1,31 @@
 import { combineReducers, createAction, createReducer } from '@reduxjs/toolkit';
-import { matches, Task } from '../types/task.ts';
-import { AppState } from './app.store.ts';
+import { Task } from '../types/task.ts';
 
-export const tasksInit = createAction<Task[]>('tasksInit');
+export type TaskState = { [key: string]: Task };
+
+export const tasksInit = createAction<TaskState>('tasksInit');
 export const taskAdded = createAction<Task>('taskAdded');
 export const taskEdited = createAction<Task>('taskEdited');
 export const taskDeleted = createAction<string>('taskDeleted');
 
-export const taskValue = createReducer<Task[]>([], (builder) => {
-  builder.addCase(tasksInit, (_state, { payload }) => payload);
-  builder.addCase(taskAdded, (state, { payload }) => [...state, payload]);
+export const taskValue = createReducer<TaskState>({}, (builder) => {
+  builder.addCase(tasksInit, (_state, { payload }) => ({ ...payload }));
+  builder.addCase(taskAdded, (state, { payload }) => ({
+    ...state,
+    [payload.uuid]: payload,
+  }));
 
-  builder.addCase(taskEdited, (state, { payload }) =>
-    state.map((task) => (task.uuid === payload.uuid ? payload : task)),
-  );
+  builder.addCase(taskEdited, (state, { payload }) => ({
+    ...state,
+    [payload.uuid]: payload,
+  }));
 
-  builder.addCase(taskDeleted, (state, { payload }) =>
-    state.filter(({ uuid }) => uuid !== payload),
-  );
+  builder.addCase(taskDeleted, (state, { payload }) => {
+    const { [payload]: _, ...updated } = state;
+    return updated;
+  });
 });
 
 export const taskReducer = combineReducers({
   taskValue,
 });
-
-export const selectTasks = (state: AppState) => state.tasks.taskValue;
-
-export const selectTasksByDate = (date: string) => (state: AppState) =>
-  selectTasks(state).filter((task) => matches(task, date));

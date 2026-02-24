@@ -1,9 +1,9 @@
 import { Button, Group, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
-import { ReactNode, useRef, useState } from 'react';
+import { ReactNode, useCallback, useRef, useState } from 'react';
 import {
-  ConfirmationModalContext,
+  confirmationModalContext,
   ConfirmationModalParams,
 } from '../types/confirmation-modal-context';
 
@@ -15,20 +15,23 @@ export const ConfirmationModalContextProvider = (
   props: ConfirmationModalContextProviderProps,
 ) => {
   const [opened, { open, close }] = useDisclosure(false);
-  const [content, setContent] = useState<ConfirmationModalParams | null>();
+  const [content, setContent] = useState<ConfirmationModalParams | null>(null);
 
   const resolver = useRef<() => void | null>(null);
   const rejector = useRef<() => void | null>(null);
 
-  const showConfirmation = (params: ConfirmationModalParams): Promise<void> => {
-    setContent(params);
-    open();
+  const showConfirmation = useCallback(
+    (params: ConfirmationModalParams): Promise<void> => {
+      setContent(params);
+      open();
 
-    return new Promise((resolve, reject) => {
-      resolver.current = resolve;
-      rejector.current = reject;
-    });
-  };
+      return new Promise((resolve, reject) => {
+        resolver.current = resolve;
+        rejector.current = reject;
+      });
+    },
+    [open],
+  );
 
   const resolve = () => {
     resolver.current?.();
@@ -41,10 +44,10 @@ export const ConfirmationModalContextProvider = (
   };
 
   return (
-    <ConfirmationModalContext.Provider value={{ showConfirmation }}>
+    <confirmationModalContext.Provider value={showConfirmation}>
       {props.children}
 
-      <Modal opened={opened} onClose={close} title={content?.title} centered>
+      <Modal opened={opened} onClose={reject} title={content?.title} centered>
         <Modal.Body>
           <label>{content?.message}</label>
         </Modal.Body>
@@ -56,6 +59,6 @@ export const ConfirmationModalContextProvider = (
           <Button onClick={resolve}>Confirm</Button>
         </Group>
       </Modal>
-    </ConfirmationModalContext.Provider>
+    </confirmationModalContext.Provider>
   );
 };

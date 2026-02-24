@@ -4,7 +4,8 @@ import { getCalendarDays } from '../../utils/time.ts';
 import { CalendarDay } from './CalendarDay.tsx';
 import classes from './Calendar.module.scss';
 
-export function Calendar() {
+// for now, it is current month. In the future I plan allow switching to the next months
+export function CalendarMonth() {
   const weekDaysLabels = useMemo(() => orderedWeekDays.map(formatWeekDay), []);
   const days = useMemo(() => getCalendarDays(orderedWeekDays), []);
 

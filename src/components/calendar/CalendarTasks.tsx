@@ -1,11 +1,10 @@
 import { Badge } from '@mantine/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectTasksByDate } from '../../stores/task.store.ts';
-import { getCurrentMonthDay } from '../../utils/time.ts';
 import { CalendarTask } from './CalendarTask.tsx';
 import classes from './Calendar.module.scss';
 import { AppDispatch } from '../../stores/app.store.ts';
 import { daySelected } from '../../stores/day.store.ts';
+import { selectTasksIterationsByDay } from '../../stores/selectors.ts';
 
 interface CalendarTasksProps {
   day: number;
@@ -13,16 +12,14 @@ interface CalendarTasksProps {
 
 export function CalendarTasks({ day }: CalendarTasksProps) {
   const dispatch = useDispatch<AppDispatch>();
-  const date = getCurrentMonthDay(day).toString();
-  const tasks = useSelector(selectTasksByDate(date));
-
-  const onClick = () => dispatch(daySelected(date));
+  const tasksIterations = useSelector(selectTasksIterationsByDay(day));
+  const onClick = () => dispatch(daySelected(day));
 
   return (
     <div className={classes.contentWrapper} onClick={onClick}>
       <Badge color="deepBlue.5">{day}</Badge>
-      {tasks.map((task) => (
-        <CalendarTask key={task.uuid} task={task} />
+      {tasksIterations?.map((iteration) => (
+        <CalendarTask key={iteration.uuid} iteration={iteration} />
       ))}
     </div>
   );
