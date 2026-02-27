@@ -33,7 +33,7 @@ import { TaskRepetition } from '../types/task-repetition.ts';
 // todo learn to store the iterations in the localStorage, so you can recover their metadata (the task was checked yesterday)
 //  + fill them with missing records of not checked iterations
 // for now, they are recreated every time
-export const initScheduleAndInteractions = (): AppThunk => {
+export const initScheduleAndIterations = (): AppThunk => {
   return (dispatch, getState) => {
     const schedule: ScheduleState = {};
     let iterations: IterationState = {};
@@ -56,7 +56,7 @@ export const initScheduleAndInteractions = (): AppThunk => {
   };
 };
 
-export const addScheduleAndInteraction = (task: Task): AppThunk => {
+export const addScheduleAndIteration = (task: Task): AppThunk => {
   return (dispatch) => {
     switch (task.repetition) {
       case TaskRepetition.ONCE:
@@ -85,9 +85,9 @@ export const addScheduleAndInteraction = (task: Task): AppThunk => {
   };
 };
 
-export const checkInteraction = (interactionUuid: string): AppThunk => {
+export const checkIteration = (iterationUuid: string): AppThunk => {
   return (dispatch, getState) => {
-    const iteration = selectIteration(interactionUuid)(getState());
+    const iteration = selectIteration(iterationUuid)(getState());
 
     if (iteration) {
       dispatch(
@@ -100,7 +100,7 @@ export const checkInteraction = (interactionUuid: string): AppThunk => {
   };
 };
 
-export const deleteScheduleAndInteraction = (taskUuid: string): AppThunk => {
+export const deleteScheduleAndIteration = (taskUuid: string): AppThunk => {
   return (dispatch, getState) => {
     const iterationUuids = Object.values(selectIterations(getState()))
       .filter((iteration) => iteration.task.uuid === taskUuid)

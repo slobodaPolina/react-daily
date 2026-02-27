@@ -7,6 +7,7 @@ import { initTasks } from '../stores/task.thunk.ts';
 import { useEffect } from 'react';
 import { AppDispatch } from '../stores/app.store.ts';
 import { ConfirmationModalContextProvider } from '../providers/ConfirmationModalContextProvider.tsx';
+import { PraiseDialogContextProvider } from '../providers/PraiseDialogContextProvider.tsx';
 
 export function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -15,9 +16,11 @@ export function App() {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
       <ConfirmationModalContextProvider>
-        <div className={classes.appWrapper}>
-          <Home />
-        </div>
+        <PraiseDialogContextProvider>
+          <div className={classes.appWrapper}>
+            <Home />
+          </div>
+        </PraiseDialogContextProvider>
       </ConfirmationModalContextProvider>
     </MantineProvider>
   );

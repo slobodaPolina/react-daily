@@ -9,7 +9,8 @@ import { confirmationModalContext } from '../../types/confirmation-modal-context
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../stores/app.store.ts';
 import classes from './DayInfo.module.scss';
-import { checkInteraction } from '../../stores/schedule.thunk.ts';
+import { checkIteration } from '../../stores/schedule.thunk.ts';
+import { praiseDialogContext } from '../../types/praise-dialog-context.ts';
 
 interface DayTaskProps {
   iteration: TaskIteration;
@@ -18,9 +19,15 @@ interface DayTaskProps {
 export function DayTask({ iteration }: DayTaskProps) {
   const dispatch = useDispatch<AppDispatch>();
   const confirmationModal = useContext(confirmationModalContext);
+  const praiseDialog = useContext(praiseDialogContext);
 
-  const onCheckTask = (interactionUuid: string) =>
-    dispatch(checkInteraction(interactionUuid));
+  const onCheckTask = (iteration: TaskIteration) => {
+    dispatch(checkIteration(iteration.uuid));
+
+    if (!iteration.checked) {
+      praiseDialog();
+    }
+  };
 
   const onDeleteTask = (task: Task) =>
     confirmationModal({
@@ -49,7 +56,7 @@ export function DayTask({ iteration }: DayTaskProps) {
           offLabel="TODO"
           color="green"
           checked={iteration.checked}
-          onClick={() => onCheckTask(iteration.uuid)}
+          onClick={() => onCheckTask(iteration)}
         />
         <EditTaskBtn task={iteration.task}></EditTaskBtn>
 
