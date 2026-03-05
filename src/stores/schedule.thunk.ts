@@ -1,4 +1,4 @@
-import { AppDispatch, AppState, AppThunk } from './app.store.ts';
+import { AppState, AppThunk } from './app.store.ts';
 import {
   equalDates,
   equalDaysOfMonth,
@@ -11,26 +11,17 @@ import {
   isCurrentMonth,
   startingFrom,
 } from '../utils/time.ts';
-import { selectIteration, selectIterations, selectTasks } from './selectors.ts';
+import { selectIterationsByTask, selectTasks } from './selectors.ts';
 import { TaskIteration } from '../types/task-iteration.ts';
 import { Task } from '../types/task.ts';
 import { TaskRepetition } from '../types/task-repetition.ts';
-import {
-  iterationAdd,
-  iterationsDelete,
-  iterationsInit,
-  scheduleAdd,
-  scheduleDelete,
-  scheduleInit,
-} from './actions.ts';
+import { scheduleAdd, scheduleDelete, scheduleInit } from './actions.ts';
 import { IterationState, ScheduleState } from './types.ts';
-
-// Schedule + Iterations
 
 // todo learn to store the iterations in the localStorage, so you can recover their metadata (the task was checked yesterday)
 //  + fill them with missing records of not checked iterations
 // for now, they are recreated every time
-export const initScheduleAndIterations = (): AppThunk => {
+export const initSchedule = (): AppThunk => {
   return (dispatch, getState) => {
     const schedule: ScheduleState = {};
     let iterations: IterationState = {};
@@ -48,17 +39,16 @@ export const initScheduleAndIterations = (): AppThunk => {
       );
     }
 
-    dispatch(scheduleInit(schedule));
-    dispatch(iterationsInit(iterations));
+    dispatch(scheduleInit({ schedule, iterations }));
   };
 };
 
-export const addScheduleAndIteration = (task: Task): AppThunk => {
+export const addSchedule = (task: Task): AppThunk => {
   return (dispatch) => {
     switch (task.repetition) {
       case TaskRepetition.ONCE:
         if (isCurrentMonth(getDate(task.date))) {
-          dispatchConstructedIteration(task, task.date, dispatch);
+          dispatch(scheduleAdd(constructTaskIteration(task, task.date)));
         }
         break;
 
@@ -66,7 +56,9 @@ export const addScheduleAndIteration = (task: Task): AppThunk => {
         getCurrentMonthSameWeekdays(task.date)
           .filter((date) => startingFrom(task.date, date.toString()))
           .forEach((date) =>
-            dispatchConstructedIteration(task, date.toString(), dispatch),
+            dispatch(
+              scheduleAdd(constructTaskIteration(task, date.toString())),
+            ),
           );
         break;
 
@@ -74,7 +66,7 @@ export const addScheduleAndIteration = (task: Task): AppThunk => {
         const date = getCurrentMonthDate(getDay(task.date))?.toString();
 
         if (date && startingFrom(task.date, date)) {
-          dispatchConstructedIteration(task, date, dispatch);
+          dispatch(scheduleAdd(constructTaskIteration(task, date)));
         }
         break;
       }
@@ -82,28 +74,12 @@ export const addScheduleAndIteration = (task: Task): AppThunk => {
   };
 };
 
-export const checkIteration = (iterationUuid: string): AppThunk => {
+export const deleteSchedule = (taskUuid: string): AppThunk => {
   return (dispatch, getState) => {
-    const iteration = selectIteration(iterationUuid)(getState());
+    const iterationUuids = selectIterationsByTask(taskUuid)(getState()).map(
+      ({ uuid }) => uuid,
+    );
 
-    if (iteration) {
-      dispatch(
-        iterationAdd({
-          ...iteration,
-          checked: !iteration.checked,
-        }),
-      );
-    }
-  };
-};
-
-export const deleteScheduleAndIteration = (taskUuid: string): AppThunk => {
-  return (dispatch, getState) => {
-    const iterationUuids = Object.values(selectIterations(getState()))
-      .filter((iteration) => iteration.task.uuid === taskUuid)
-      .map(({ uuid }) => uuid);
-
-    dispatch(iterationsDelete(iterationUuids));
     dispatch(scheduleDelete(iterationUuids));
   };
 };
@@ -143,20 +119,4 @@ const constructTaskIterationsForDay = (
       constructTaskIteration(task, date),
     );
   }
-};
-
-const dispatchConstructedIteration = (
-  task: Task,
-  completionDate: string,
-  dispatch: AppDispatch,
-) => {
-  const iteration = constructTaskIteration(task, completionDate);
-  dispatch(iterationAdd(iteration));
-
-  dispatch(
-    scheduleAdd({
-      day: getDay(completionDate).toString(),
-      iterationUuid: iteration.uuid,
-    }),
-  );
 };

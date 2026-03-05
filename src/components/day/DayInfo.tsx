@@ -6,15 +6,12 @@ import {
   getCurrentDay,
   getCurrentMonthDate,
 } from '../../utils/time.ts';
-import {
-  selectDay,
-  selectTasksIterationsByDay,
-} from '../../stores/selectors.ts';
+import { selectDay, selectIterationsByDay } from '../../stores/selectors.ts';
 import { DayTask } from './DayTask.tsx';
 
 export function DayInfo() {
   const selectedDay = useSelector(selectDay);
-  const tasksIterations = useSelector(selectTasksIterationsByDay(selectedDay));
+  const tasksIterations = useSelector(selectIterationsByDay(selectedDay));
 
   const formattedDate = formatDate(
     getCurrentMonthDate(selectedDay) ??

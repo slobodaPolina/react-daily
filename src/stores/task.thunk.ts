@@ -7,11 +7,7 @@ import {
   isCurrentMonth,
 } from '../utils/time.ts';
 import { selectTasks } from './selectors.ts';
-import {
-  addScheduleAndIteration,
-  deleteScheduleAndIteration,
-  initScheduleAndIterations,
-} from './schedule.thunk.ts';
+import { addSchedule, deleteSchedule, initSchedule } from './schedule.thunk.ts';
 import {
   daySelected,
   taskAdded,
@@ -40,7 +36,7 @@ export const initTasks = (): AppThunk => {
     }
 
     dispatch(tasksInit(parsedTasks));
-    dispatch(initScheduleAndIterations());
+    dispatch(initSchedule());
     setLocalStorage(parsedTasks); // reset local storage in case of errors
   };
 };
@@ -54,7 +50,7 @@ export const addTask = (task: Task): AppThunk => {
     };
 
     dispatch(taskAdded(payload));
-    dispatch(addScheduleAndIteration(payload));
+    dispatch(addSchedule(payload));
 
     if (isCurrentMonth(getDate(payload.date))) {
       dispatch(daySelected(getDay(payload.date)));
@@ -72,8 +68,8 @@ export const editTask = (task: Task): AppThunk => {
     };
 
     dispatch(taskEdited(payload));
-    dispatch(deleteScheduleAndIteration(payload.uuid));
-    dispatch(addScheduleAndIteration(payload));
+    dispatch(deleteSchedule(payload.uuid));
+    dispatch(addSchedule(payload));
     setLocalStorage(selectTasks(getState()));
   };
 };
@@ -81,7 +77,7 @@ export const editTask = (task: Task): AppThunk => {
 export const deleteTask = (uuid: string): AppThunk => {
   return async (dispatch, getState) => {
     dispatch(taskDeleted(uuid));
-    dispatch(deleteScheduleAndIteration(uuid));
+    dispatch(deleteSchedule(uuid));
     setLocalStorage(selectTasks(getState()));
   };
 };

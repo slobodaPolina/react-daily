@@ -10,14 +10,6 @@ export const selectTask =
   (state: AppState): Task | undefined =>
     selectTasks(state)[uuid];
 
-export const selectIterations = (state: AppState) =>
-  state.iterations.iterationValue;
-
-export const selectIteration =
-  (uuid: string) =>
-  (state: AppState): TaskIteration | undefined =>
-    selectIterations(state)[uuid];
-
 export const selectSchedule = (state: AppState) => state.schedule.scheduleValue;
 
 export const selectScheduleDay =
@@ -25,9 +17,24 @@ export const selectScheduleDay =
   (state: AppState): string[] | undefined =>
     selectSchedule(state)[day];
 
-export const selectTasksIterationsByDay =
+export const selectIterations = (state: AppState) =>
+  state.schedule.iterationsValue;
+
+export const selectIterationByUuid =
+  (uuid: string) =>
+  (state: AppState): TaskIteration | undefined =>
+    selectIterations(state)[uuid];
+
+export const selectIterationsByTask =
+  (taskUuid: string) =>
+  (state: AppState): TaskIteration[] =>
+    Object.values(selectIterations(state)).filter(
+      (iteration) => iteration.task.uuid === taskUuid,
+    );
+
+export const selectIterationsByDay =
   (day: number) =>
   (state: AppState): TaskIteration[] | undefined =>
     selectScheduleDay(day)(state)
-      ?.map((iterationUuid) => selectIteration(iterationUuid)(state))
+      ?.map((iterationUuid) => selectIterationByUuid(iterationUuid)(state))
       .filter((iteration): iteration is TaskIteration => Boolean(iteration));
