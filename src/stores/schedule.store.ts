@@ -1,34 +1,109 @@
-import { combineReducers, createAction, createReducer } from '@reduxjs/toolkit';
-
-// Schedule for the selected month (current month for now)
-
-// [day number (1-31)]: iterationUuids[], like { '27': ['b121d549-ae1f-4ea9-bfa4-fcc796520ded'] }
-export type ScheduleState = { [key: string]: string[] };
-type ScheduleAddPayload = { day: string; iterationUuid: string };
-
-export const scheduleInit = createAction<ScheduleState>('scheduleInit');
-export const scheduleAdd = createAction<ScheduleAddPayload>('scheduleAdd');
-export const scheduleDelete = createAction<string[]>('scheduleDelete');
+import { combineReducers, createReducer } from '@reduxjs/toolkit';
+import {
+  taskAdded,
+  taskDeleted,
+  taskEdited,
+  tasksInit,
+  taskToggled,
+} from './actions.ts';
+import type { IterationState, ScheduleState } from './types.ts';
+import { getDay } from '../utils/time.ts';
+import { TaskIteration } from '../types/task-iteration.ts';
 
 export const scheduleValue = createReducer<ScheduleState>({}, (builder) => {
-  builder.addCase(scheduleInit, (_state, { payload }) => ({ ...payload }));
+  const addSchedule = (
+    iterations: TaskIteration[],
+    state: ScheduleState,
+  ): ScheduleState =>
+    iterations.reduce((acc, current) => {
+      const day = getDay(current.completionDate).toString();
 
-  builder.addCase(scheduleAdd, (state, { payload }) => ({
-    ...state,
-    [payload.day]: [...state[payload.day], payload.iterationUuid],
-  }));
+      return {
+        ...acc,
+        [day]: [...acc[day], current.uuid],
+      };
+    }, state);
 
-  builder.addCase(scheduleDelete, (state, { payload }) => {
-    return Object.entries(state).reduce(
+  const deleteSchedule = (
+    iterationUuids: string[],
+    state: ScheduleState,
+  ): ScheduleState =>
+    Object.entries(state).reduce(
       (acc, [day, uuids]) => ({
         ...acc,
-        [day]: uuids.filter((uuid) => !payload.includes(uuid)),
+        [day]: uuids.filter((uuid) => !iterationUuids.includes(uuid)),
       }),
       {},
     );
-  });
+
+  builder.addCase(tasksInit, (_state, { payload }) => ({
+    ...payload.schedule,
+  }));
+
+  builder.addCase(taskAdded, (state, { payload }) =>
+    addSchedule(payload.iterations, state),
+  );
+
+  builder.addCase(taskEdited, (state, { payload }) =>
+    addSchedule(
+      payload.iterations,
+      deleteSchedule(payload.obsoleteIterations, state),
+    ),
+  );
+
+  builder.addCase(taskDeleted, (state, { payload }) =>
+    deleteSchedule(payload.iterationsUuids, state),
+  );
+});
+
+export const iterationsValue = createReducer<IterationState>({}, (builder) => {
+  const addIterations = (iterations: TaskIteration[], state: IterationState) =>
+    iterations.reduce(
+      (acc, current) => ({
+        ...acc,
+        [current.uuid]: current,
+      }),
+      state,
+    );
+
+  const deleteIterations = (iterationsUuids: string[], state: IterationState) =>
+    Object.values(state).reduce(
+      (acc, current) =>
+        iterationsUuids.includes(current.uuid)
+          ? acc
+          : { ...acc, [current.uuid]: current },
+      {},
+    );
+
+  builder.addCase(tasksInit, (_state, { payload }) => ({
+    ...payload.iterations,
+  }));
+
+  builder.addCase(taskAdded, (state, { payload }) =>
+    addIterations(payload.iterations, state),
+  );
+
+  builder.addCase(taskEdited, (state, { payload }) =>
+    addIterations(
+      payload.iterations,
+      deleteIterations(payload.obsoleteIterations, state),
+    ),
+  );
+
+  builder.addCase(taskDeleted, (state, { payload }) =>
+    deleteIterations(payload.iterationsUuids, state),
+  );
+
+  builder.addCase(taskToggled, (state, { payload }) => ({
+    ...state,
+    [payload]: {
+      ...state[payload],
+      checked: !state[payload].checked,
+    },
+  }));
 });
 
 export const scheduleReducer = combineReducers({
   scheduleValue,
+  iterationsValue,
 });

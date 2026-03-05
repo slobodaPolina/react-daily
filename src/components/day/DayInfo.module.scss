@@ -1,4 +1,8 @@
 .day-container {
   background: var(--mantine-color-dark-light);
   height: 100%;
+
+  .task-container {
+    background: var(--mantine-color-dark-light);
+  }
 }

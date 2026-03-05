@@ -6,3 +6,7 @@ export interface TaskIteration {
   checked: boolean;
   task: Task;
 }
+
+export const getCheckedIcon = (checked: boolean): string => {
+  return checked ? 'check' : 'check_box_outline_blank';
+};
