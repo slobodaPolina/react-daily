@@ -3,12 +3,6 @@ import { Task } from '../types/task.ts';
 import { ThunkAction, UnknownAction } from '@reduxjs/toolkit';
 import { store } from './app.store.ts';
 
-// Schedule for the selected month (current month for now)
-export type CombinedScheduleState = {
-  schedule: ScheduleState;
-  iterations: IterationState;
-};
-
 // [day number (1-31)]: iterationUuids[], like { '27': ['b121d549-ae1f-4ea9-bfa4-fcc796520ded'] }
 export type ScheduleState = { [key: string]: string[] };
 

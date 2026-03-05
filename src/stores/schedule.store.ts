@@ -1,65 +1,106 @@
 import { combineReducers, createReducer } from '@reduxjs/toolkit';
 import {
-  scheduleAdd,
-  scheduleCheckToggled,
-  scheduleDelete,
-  scheduleInit,
+  taskAdded,
+  taskDeleted,
+  taskEdited,
+  tasksInit,
+  taskToggled,
 } from './actions.ts';
 import type { IterationState, ScheduleState } from './types.ts';
 import { getDay } from '../utils/time.ts';
+import { TaskIteration } from '../types/task-iteration.ts';
 
 export const scheduleValue = createReducer<ScheduleState>({}, (builder) => {
-  builder.addCase(scheduleInit, (_state, { payload }) => ({
-    ...payload.schedule,
-  }));
+  const addSchedule = (
+    iterations: TaskIteration[],
+    state: ScheduleState,
+  ): ScheduleState =>
+    iterations.reduce((acc, current) => {
+      const day = getDay(current.completionDate).toString();
 
-  builder.addCase(scheduleAdd, (state, { payload }) => {
-    const day = getDay(payload.completionDate).toString();
+      return {
+        ...acc,
+        [day]: [...acc[day], current.uuid],
+      };
+    }, state);
 
-    return {
-      ...state,
-      [day]: [...state[day], payload.uuid],
-    };
-  });
-
-  builder.addCase(scheduleDelete, (state, { payload }) =>
+  const deleteSchedule = (
+    iterationUuids: string[],
+    state: ScheduleState,
+  ): ScheduleState =>
     Object.entries(state).reduce(
       (acc, [day, uuids]) => ({
         ...acc,
-        [day]: uuids.filter((uuid) => !payload.includes(uuid)),
+        [day]: uuids.filter((uuid) => !iterationUuids.includes(uuid)),
       }),
       {},
+    );
+
+  builder.addCase(tasksInit, (_state, { payload }) => ({
+    ...payload.schedule,
+  }));
+
+  builder.addCase(taskAdded, (state, { payload }) =>
+    addSchedule(payload.iterations, state),
+  );
+
+  builder.addCase(taskEdited, (state, { payload }) =>
+    addSchedule(
+      payload.iterations,
+      deleteSchedule(payload.obsoleteIterations, state),
     ),
+  );
+
+  builder.addCase(taskDeleted, (state, { payload }) =>
+    deleteSchedule(payload.iterationsUuids, state),
   );
 });
 
 export const iterationsValue = createReducer<IterationState>({}, (builder) => {
-  builder.addCase(scheduleInit, (_state, { payload }) => ({
+  const addIterations = (iterations: TaskIteration[], state: IterationState) =>
+    iterations.reduce(
+      (acc, current) => ({
+        ...acc,
+        [current.uuid]: current,
+      }),
+      state,
+    );
+
+  const deleteIterations = (iterationsUuids: string[], state: IterationState) =>
+    Object.values(state).reduce(
+      (acc, current) =>
+        iterationsUuids.includes(current.uuid)
+          ? acc
+          : { ...acc, [current.uuid]: current },
+      {},
+    );
+
+  builder.addCase(tasksInit, (_state, { payload }) => ({
     ...payload.iterations,
   }));
 
-  builder.addCase(scheduleAdd, (state, { payload }) => ({
-    ...state,
-    [payload.uuid]: payload,
-  }));
+  builder.addCase(taskAdded, (state, { payload }) =>
+    addIterations(payload.iterations, state),
+  );
 
-  builder.addCase(scheduleCheckToggled, (state, { payload }) => ({
+  builder.addCase(taskEdited, (state, { payload }) =>
+    addIterations(
+      payload.iterations,
+      deleteIterations(payload.obsoleteIterations, state),
+    ),
+  );
+
+  builder.addCase(taskDeleted, (state, { payload }) =>
+    deleteIterations(payload.iterationsUuids, state),
+  );
+
+  builder.addCase(taskToggled, (state, { payload }) => ({
     ...state,
     [payload]: {
       ...state[payload],
       checked: !state[payload].checked,
     },
   }));
-
-  builder.addCase(scheduleDelete, (state, { payload }) =>
-    Object.values(state).reduce(
-      (acc, current) =>
-        payload.includes(current.uuid)
-          ? acc
-          : { ...acc, [current.uuid]: current },
-      {},
-    ),
-  );
 });
 
 export const scheduleReducer = combineReducers({

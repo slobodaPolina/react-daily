@@ -9,7 +9,7 @@ import { confirmationModalContext } from '../../types/confirmation-modal-context
 import { useDispatch } from 'react-redux';
 import classes from './DayInfo.module.scss';
 import { praiseDialogContext } from '../../types/praise-dialog-context.ts';
-import { scheduleCheckToggled } from '../../stores/actions.ts';
+import { taskToggled } from '../../stores/actions.ts';
 import type { AppDispatch } from '../../stores/types.ts';
 
 interface DayTaskProps {
@@ -22,7 +22,7 @@ export function DayTask({ iteration }: DayTaskProps) {
   const praiseDialog = useContext(praiseDialogContext);
 
   const onCheckTask = (iteration: TaskIteration) => {
-    dispatch(scheduleCheckToggled(iteration.uuid));
+    dispatch(taskToggled(iteration.uuid));
 
     if (!iteration.checked) {
       praiseDialog();

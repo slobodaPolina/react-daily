@@ -1,20 +1,30 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Task } from '../types/task.ts';
 import { TaskIteration } from '../types/task-iteration.ts';
-import type { CombinedScheduleState, TaskState } from './types.ts';
+import { IterationState, ScheduleState, TaskState } from './types.ts';
 
 export const daySelected = createAction<number>('daySelected');
 
-export const tasksInit = createAction<TaskState>('tasksInit');
-export const taskAdded = createAction<Task>('taskAdded');
-export const taskEdited = createAction<Task>('taskEdited');
-export const taskDeleted = createAction<string>('taskDeleted');
+export const tasksInit = createAction<{
+  tasks: TaskState;
+  schedule: ScheduleState;
+  iterations: IterationState;
+}>('tasksInit');
 
-export const scheduleInit = createAction<CombinedScheduleState>('scheduleInit');
-export const scheduleAdd = createAction<TaskIteration>('scheduleAdd');
+export const taskAdded = createAction<{
+  task: Task; // new task
+  iterations: TaskIteration[]; // new iterations
+}>('taskAdded');
 
-export const scheduleCheckToggled = createAction<string>(
-  'scheduleCheckToggled',
-);
+export const taskEdited = createAction<{
+  task: Task; // updated task
+  iterations: TaskIteration[]; // new iterations
+  obsoleteIterations: string[]; // previously related iterations which should be removed
+}>('taskEdited');
 
-export const scheduleDelete = createAction<string[]>('scheduleDelete');
+export const taskToggled = createAction<string>('taskToggled');
+
+export const taskDeleted = createAction<{
+  taskUuid: string; // removed task uuid
+  iterationsUuids: string[]; // related iterations uuids
+}>('taskDeleted');
