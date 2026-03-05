@@ -1,5 +1,7 @@
 import { TaskIteration } from '../types/task-iteration.ts';
 import { Task } from '../types/task.ts';
+import { ThunkAction, UnknownAction } from '@reduxjs/toolkit';
+import { store } from './app.store.ts';
 
 // Schedule for the selected month (current month for now)
 export type CombinedScheduleState = {
@@ -16,3 +18,14 @@ export type IterationState = { [key: string]: TaskIteration };
 // All tasks in the system
 // [taskUuid]: task
 export type TaskState = { [key: string]: Task };
+
+type AppStore = typeof store;
+export type AppDispatch = AppStore['dispatch'];
+export type AppState = ReturnType<AppStore['getState']>;
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  AppState,
+  undefined,
+  UnknownAction
+>;

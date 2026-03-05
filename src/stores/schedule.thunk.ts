@@ -1,4 +1,3 @@
-import { AppState, AppThunk } from './app.store.ts';
 import {
   equalDates,
   equalDaysOfMonth,
@@ -16,7 +15,12 @@ import { TaskIteration } from '../types/task-iteration.ts';
 import { Task } from '../types/task.ts';
 import { TaskRepetition } from '../types/task-repetition.ts';
 import { scheduleAdd, scheduleDelete, scheduleInit } from './actions.ts';
-import { IterationState, ScheduleState } from './types.ts';
+import type {
+  AppState,
+  AppThunk,
+  IterationState,
+  ScheduleState,
+} from './types.ts';
 
 // todo learn to store the iterations in the localStorage, so you can recover their metadata (the task was checked yesterday)
 //  + fill them with missing records of not checked iterations

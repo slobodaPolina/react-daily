@@ -3,7 +3,7 @@ import { Task } from '../../types/task.ts';
 import { EditTaskForm } from './EditTaskForm.tsx';
 import { useDispatch } from 'react-redux';
 import { addTask, editTask } from '../../stores/task.thunk.ts';
-import { AppDispatch } from '../../stores/app.store.ts';
+import type { AppDispatch } from '../../stores/types.ts';
 
 interface EditTaskProps {
   opened: boolean;

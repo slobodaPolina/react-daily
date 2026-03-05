@@ -1,5 +1,4 @@
 import { Task } from '../types/task.ts';
-import { AppThunk } from './app.store.ts';
 import {
   getDate,
   getDay,
@@ -15,7 +14,7 @@ import {
   taskEdited,
   tasksInit,
 } from './actions.ts';
-import { TaskState } from './types.ts';
+import type { AppThunk, TaskState } from './types.ts';
 
 const tasksLocalStorageKey = 'tasks';
 

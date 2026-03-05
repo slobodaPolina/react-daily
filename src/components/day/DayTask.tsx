@@ -7,10 +7,10 @@ import { deleteTask } from '../../stores/task.thunk.ts';
 import { useContext } from 'react';
 import { confirmationModalContext } from '../../types/confirmation-modal-context.ts';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../stores/app.store.ts';
 import classes from './DayInfo.module.scss';
 import { praiseDialogContext } from '../../types/praise-dialog-context.ts';
 import { scheduleCheckToggled } from '../../stores/actions.ts';
+import type { AppDispatch } from '../../stores/types.ts';
 
 interface DayTaskProps {
   iteration: TaskIteration;

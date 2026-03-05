@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { Task } from '../types/task.ts';
 import { TaskIteration } from '../types/task-iteration.ts';
-import { CombinedScheduleState, TaskState } from './types.ts';
+import type { CombinedScheduleState, TaskState } from './types.ts';
 
 export const daySelected = createAction<number>('daySelected');
 

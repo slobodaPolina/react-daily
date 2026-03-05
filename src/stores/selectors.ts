@@ -1,6 +1,6 @@
-import { AppState } from './app.store.ts';
 import { TaskIteration } from '../types/task-iteration.ts';
 import { Task } from '../types/task.ts';
+import type { AppState } from './types.ts';
 
 export const selectDay = (state: AppState) => state.day.dayValue;
 export const selectTasks = (state: AppState) => state.tasks.taskValue;

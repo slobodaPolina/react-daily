@@ -5,7 +5,7 @@ import {
   scheduleDelete,
   scheduleInit,
 } from './actions.ts';
-import { IterationState, ScheduleState } from './types.ts';
+import type { IterationState, ScheduleState } from './types.ts';
 import { getDay } from '../utils/time.ts';
 
 export const scheduleValue = createReducer<ScheduleState>({}, (builder) => {
