@@ -1,12 +1,6 @@
-import { combineReducers, createAction, createReducer } from '@reduxjs/toolkit';
-import { Task } from '../types/task.ts';
-
-export type TaskState = { [key: string]: Task };
-
-export const tasksInit = createAction<TaskState>('tasksInit');
-export const taskAdded = createAction<Task>('taskAdded');
-export const taskEdited = createAction<Task>('taskEdited');
-export const taskDeleted = createAction<string>('taskDeleted');
+import { combineReducers, createReducer } from '@reduxjs/toolkit';
+import { taskAdded, taskDeleted, taskEdited, tasksInit } from './actions.ts';
+import { TaskState } from './types.ts';
 
 export const taskValue = createReducer<TaskState>({}, (builder) => {
   builder.addCase(tasksInit, (_state, { payload }) => ({ ...payload }));

@@ -36,12 +36,7 @@ export function DayTask({ iteration }: DayTaskProps) {
     }).then(() => dispatch(deleteTask(task.uuid)));
 
   return (
-    <Card
-      key={iteration.uuid}
-      padding="md"
-      radius="sm"
-      mt="md"
-      className={classes.taskContainer}>
+    <Card padding="md" radius="sm" mt="md" className={classes.taskContainer}>
       <Group justify="space-between">
         <Text fw={500}>{iteration.task.name}</Text>
         <Badge variant="filled">

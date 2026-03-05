@@ -1,7 +1,6 @@
-import { combineReducers, createAction, createReducer } from '@reduxjs/toolkit';
+import { combineReducers, createReducer } from '@reduxjs/toolkit';
 import { getCurrentDay } from '../utils/time.ts';
-
-export const daySelected = createAction<number>('daySelected');
+import { daySelected } from './actions.ts';
 
 export const dayValue = createReducer<number>(getCurrentDay(), (builder) => {
   builder.addCase(daySelected, (_state, { payload }) => payload);

@@ -11,22 +11,19 @@ import {
   isCurrentMonth,
   startingFrom,
 } from '../utils/time.ts';
-import {
-  scheduleAdd,
-  scheduleDelete,
-  scheduleInit,
-  ScheduleState,
-} from './schedule.store.ts';
 import { selectIteration, selectIterations, selectTasks } from './selectors.ts';
 import { TaskIteration } from '../types/task-iteration.ts';
+import { Task } from '../types/task.ts';
+import { TaskRepetition } from '../types/task-repetition.ts';
 import {
   iterationAdd,
   iterationsDelete,
   iterationsInit,
-  IterationState,
-} from './iteration.store.ts';
-import { Task } from '../types/task.ts';
-import { TaskRepetition } from '../types/task-repetition.ts';
+  scheduleAdd,
+  scheduleDelete,
+  scheduleInit,
+} from './actions.ts';
+import { IterationState, ScheduleState } from './types.ts';
 
 // Schedule + Iterations
 

@@ -1,11 +1,4 @@
 import { Task } from '../types/task.ts';
-import {
-  taskAdded,
-  taskDeleted,
-  taskEdited,
-  tasksInit,
-  TaskState,
-} from './task.store.ts';
 import { AppThunk } from './app.store.ts';
 import {
   getDate,
@@ -19,7 +12,14 @@ import {
   deleteScheduleAndIteration,
   initScheduleAndIterations,
 } from './schedule.thunk.ts';
-import { daySelected } from './day.store.ts';
+import {
+  daySelected,
+  taskAdded,
+  taskDeleted,
+  taskEdited,
+  tasksInit,
+} from './actions.ts';
+import { TaskState } from './types.ts';
 
 const tasksLocalStorageKey = 'tasks';
 
