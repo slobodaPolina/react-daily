@@ -1,4 +1,4 @@
-import { ActionIcon, Badge, Card, Group, Switch, Text } from '@mantine/core';
+import { Badge, Card, Group, Switch, Text } from '@mantine/core';
 import { taskRepetitionLabels } from '../../types/task-repetition.ts';
 import { EditTaskBtn } from '../edit-task/EditTaskBtn.tsx';
 import { TaskIteration } from '../../types/task-iteration.ts';
@@ -11,6 +11,7 @@ import classes from './DayInfo.module.scss';
 import { praiseDialogContext } from '../../types/praise-dialog-context.ts';
 import { taskToggled } from '../../stores/actions.ts';
 import type { AppDispatch } from '../../stores/types.ts';
+import { IconButton } from '../ui/icon-button/IconButton.tsx';
 
 interface DayTaskProps {
   iteration: TaskIteration;
@@ -55,14 +56,11 @@ export function DayTask({ iteration }: DayTaskProps) {
         />
         <EditTaskBtn task={iteration.task}></EditTaskBtn>
 
-        <ActionIcon
-          variant="gradient"
+        <IconButton
+          icon="delete"
+          label="Delete"
           gradient={{ from: 'red', to: 'dark', deg: 45 }}
-          aria-label="Delete"
-          size="lg"
-          onClick={() => onDeleteTask(iteration.task)}>
-          <span className="material-icons">delete</span>
-        </ActionIcon>
+          onClick={() => onDeleteTask(iteration.task)}></IconButton>
       </Group>
     </Card>
   );

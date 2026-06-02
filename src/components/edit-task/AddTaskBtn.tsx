@@ -1,6 +1,6 @@
-import { ActionIcon } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { EditTask } from './EditTask.tsx';
+import { IconButton } from '../ui/icon-button/IconButton.tsx';
 
 interface AddTaskProps {
   size?: string;
@@ -11,14 +11,11 @@ export function AddTaskBtn({ size = 'lg' }: AddTaskProps) {
 
   return (
     <>
-      <ActionIcon
-        variant="gradient"
-        aria-label="Add"
+      <IconButton
+        icon="add_task"
+        label="Add"
         size={size}
-        onClick={open}>
-        <span className="material-icons">add_task</span>
-      </ActionIcon>
-
+        onClick={open}></IconButton>
       <EditTask opened={opened} onClose={close}></EditTask>
     </>
   );

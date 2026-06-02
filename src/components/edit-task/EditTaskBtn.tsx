@@ -1,7 +1,7 @@
-import { ActionIcon } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { EditTask } from './EditTask.tsx';
 import { Task } from '../../types/task.ts';
+import { IconButton } from '../ui/icon-button/IconButton.tsx';
 
 interface EditTaskProps {
   size?: string;
@@ -13,13 +13,11 @@ export function EditTaskBtn({ task, size = 'lg' }: EditTaskProps) {
 
   return (
     <>
-      <ActionIcon
-        variant="gradient"
-        aria-label="Edit"
+      <IconButton
+        icon="edit"
+        label="Edit"
         size={size}
-        onClick={open}>
-        <span className="material-icons">edit</span>
-      </ActionIcon>
+        onClick={open}></IconButton>
 
       <EditTask opened={opened} onClose={close} task={task}></EditTask>
     </>
