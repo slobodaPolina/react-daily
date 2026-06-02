@@ -3,3 +3,4 @@
 .prettierignore
 .husky
 src/assets
+public/assets
